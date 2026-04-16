@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Context Bootstrap"
+  short_description: "Git-first agent memory bootstrap from repository history"
+  default_prompt: "Mine local Git history and generate a compact .agent_memory tree with hotspots, couplings, bugfix patterns, risks, and expertise map."
