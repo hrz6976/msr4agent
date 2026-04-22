@@ -1,0 +1,38 @@
+% Experimental results for different functionality-driven tasks under three settings: inquiring only documentation, only source code, or both.
+
+\begin{table*}[t]
+\centering
+\caption{Performance comparison on functionality-driven tasks between the standalone RepoAgent and RepoAgent augmented with source code (RepoAgent + Code).
+\textbf{Top XX} indicates the token size of the retrieved documentation and source code context, which is evenly allocated to each source. The largest value in each column is marked in \textbf{bold} and \underline{underlined}.}
+\vspace{-1em}
+
+\label{tab:rq2_results}
+\setlength{\tabcolsep}{5.5pt}
+% \renewcommand{\arraystretch}{0.7}
+
+\begin{tabular}{l|cc|cc|cc|cc|cc|cc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{6}{c|}{\textbf{GPT-4.1}} & \multicolumn{6}{c}{\textbf{Gemini-2.5-pro}} \\
+& \multicolumn{2}{c}{\textbf{Top 1024}} & \multicolumn{2}{c}{\textbf{Top 2048}} & \multicolumn{2}{c|}{\textbf{Top 4096}} & \multicolumn{2}{c}{\textbf{Top 1024}} & \multicolumn{2}{c}{\textbf{Top 2048}} & \multicolumn{2}{c}{\textbf{Top 4096}} \\ \midrule
+\rowcolor{mygreen} \multicolumn{13}{c}{\textbf{Functionality Detection}} \\ \midrule
+\rowcolor{gray!20} \textbf{Metric (\%)} & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC \\ \midrule
+RepoAgent  & 62.19 & 25.92 & 62.97 & 26.74 & 63.75 & 27.77 & 63.28 & 25.04 & 67.66 & 33.38 & 69.53 & 37.23 \\
+% Code      & \underline{\textbf{68.28}} & \underline{\textbf{36.29}} & \underline{69.06} & \underline{37.04} & \underline{71.09} & \underline{40.23} & \underline{\textbf{73.28}} & \underline{\textbf{44.46}} & \underline{\textbf{74.84}} & \underline{\textbf{47.22}} & \underline{75.16} & \underline{47.86} \\
+RepoAgent+Code   & \underline{\textbf{67.81}} & \underline{\textbf{34.80}} & \underline{\textbf{70.47}} & \underline{\textbf{39.33}} & \underline{\textbf{72.66}} & \underline{\textbf{43.27}} & \underline{\textbf{68.13}} & \underline{\textbf{34.32}} & \underline{\textbf{74.53}} & \underline{\textbf{43.52}} & \underline{\textbf{76.25}} & \underline{\textbf{51.89}} \\ \midrule
+
+\rowcolor{myblue} \multicolumn{13}{c}{\textbf{Functionality Localization}} \\ \midrule
+\rowcolor{gray!20} \textbf{Metric (\%)} & F1 & IoU & F1 & IoU & F1 & IoU & F1 & IoU & F1 & IoU & F1 & IoU \\ \midrule
+RepoAgent & 63.64 & 60.21 & 67.43 & 64.04 & 70.19 & 66.28 & 67.48 & 64.61 & 69.83 & 66.71 & 71.11 & 67.52 \\
+% Code & \underline{70.89} & \underline{67.32} & \underline{71.04} & \underline{67.98} & \underline{73.53} & \underline{69.97} & \underline{73.82} & \underline{70.43} & \underline{74.76} & \underline{71.48} & \underline{75.40} & \underline{71.77} \\
+RepoAgent+Code & \underline{\textbf{73.09}} & \underline{\textbf{69.62}} & \underline{\textbf{76.65}} & \underline{\textbf{72.94}} & \underline{\textbf{78.22}} & \underline{\textbf{74.58}} & \underline{\textbf{74.49}} & \underline{\textbf{71.03}} & \underline{\textbf{77.75}} & \underline{\textbf{74.39}} & \underline{\textbf{80.39}} & \underline{\textbf{76.98}}\\ \midrule
+
+\rowcolor{mypink} \multicolumn{13}{c}{\textbf{Functionality Completion}} \\ \midrule
+\rowcolor{gray!20} \textbf{Metric (\%)} & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ \\
+\midrule
+RepoAgent & \underline{\textbf{26.40}} & \underline{\textbf{29.37}} & 26.06 & 28.53 & 26.87 & 29.72 & 29.40 & \underline{\textbf{33.20}} & 29.76 & 32.95 & 30.05 & 33.88 \\
+% Code     & \underline{\textbf{27.10}} & \underline{\textbf{29.47}} & \underline{26.43} & \underline{29.31} & \underline{27.97} & \underline{30.68} & \underline{\textbf{29.65}} & 32.94 & \underline{30.24} & \underline{34.18} & \underline{30.91} & \underline{34.55} \\
+RepoAgent+Code  & 26.22 & 29.11 & \underline{\textbf{26.61}} & \underline{\textbf{30.62}} & \underline{\textbf{28.41}} & \underline{\textbf{31.88}} & \underline{\textbf{29.50}} & 33.13 & \underline{\textbf{30.73}} & \underline{\textbf{34.36}} & \underline{\textbf{31.31}} & \underline{\textbf{35.34}}\\
+\bottomrule
+\end{tabular}
+% \vspace{-1em}
+\end{table*}

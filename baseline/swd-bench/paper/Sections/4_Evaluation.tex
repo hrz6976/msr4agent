@@ -1,0 +1,88 @@
+We investigate the following three research questions (RQs):
+
+\begin{itemize}[leftmargin=*]
+    \item RQ1: How do different software documentation generation methods perform on functionality-driven QA tasks? 
+    \item RQ2: How effective is our evaluation strategy in assessing software documentation quality? 
+    \item RQ3: What is the impact of software documentation quality on issue solving?
+\end{itemize}
+
+\subsection{Selected Methods}
+To comprehensively evaluate different software documentation, we compare six approaches. Among them, four are widely adopted or academically recognized repository-level software documentation generation methods, while the remaining two serve as baselines.
+
+\subsubsection{Baseline Methods}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Human-Written Documentation Artifacts (H-Written)} consist of documentation embedded directly within the source code, such as function docstrings and inline comments, as well as standalone documents, like ``README.md'' and ``.rst'' files.
+    \item \textbf{Chat}~\cite{docagent} is a baseline approach that generates documentation for each code snippet (e.g., class and function), without providing any repository-level context to the LLM.
+\end{itemize}
+
+\subsubsection{Repository-level Documentation Generation Methods}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{DeepWiki}~\cite{deepwiki} produces high-level, modular documentation by summarizing each module with its technology stack and interaction diagrams. It also includes the core file paths and source code responsible for the modules.
+    \item \textbf{AutoDoc}~\cite{autodoc} performs a depth-first traversal to index the entire code repository. The documentation is generated for each file and folder, which can be combined to describe system components and how components work together.
+    \item \textbf{DocAgent}~\cite{docagent} is a multi-agent system designed for iterative documentation generation. It orchestrates a team of specialized agents to determine a dependency-aware processing order and gather context from both internal and external sources. The documentation is generated for each code snippet, with agents iteratively writing and validating the content.
+   \item \textbf{RepoAgent}~\cite{repoagent} is a three-stage method designed for context-aware documentation. The approach first conducts a global analysis to build the dependency graph (DAG), capturing the entire repository's structure. It then leverages this contextual information to prompt an LLM to generate fine-grained, structured documentation for each code snippet.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+
+\subsubsection{Functionality Detection}
+We use the following two metrics, considering that both the positive and negative classes are important in this binary task.
+
+\textbf{Balanced Accuracy (B-ACC)} is the average of recall obtained on each class, providing a more representative measure than standard accuracy. It is calculated as:
+\begin{equation}
+    \text{B-ACC} = \frac{1}{2} \left( \frac{TP}{TP+FN} + \frac{TN}{TN+FP} \right)
+\end{equation}
+    
+\textbf{Matthews Correlation Coefficient (MCC)} is a reliable metric of binary classification, particularly useful in imbalanced datasets, calculated as:
+\begin{equation}
+    \text{MCC} = \frac{TP \times TN - FP \times FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}
+\end{equation}
+
+\subsubsection{Functionality Localization}
+This task requires the LLM to predict a list of implementation files. We leverage the following two metrics to measure performance:
+
+\textbf{F1 Score (F1)} provides a balanced assessment of precision and recall. We report the unweighted macro-average across all entries:
+\begin{equation}
+    \text{F1}_i = 2 \times \frac{|P_i \cap R_i|}{|P_i| + |R_i|}, \quad
+        \text{F1} = \frac{1}{N} \sum_{i=1}^{N} \text{F1}_i
+\end{equation}
+
+\textbf{Intersection over Union (IoU)} measures the average overlap between the predicted and reference sets. This metric is calculated as follows, where $P_i$ and $R_i$ are the predicted and reference set of the $i$-th entry, and $N$ is the total number of entries:
+\begin{equation}
+    \text{IoU}_i = \frac{|P_i \cap R_i|}{|P_i \cup R_i|}, \quad
+    \text{IoU} = \frac{1}{N} \sum_{i=1}^{N} \text{IoU}_i
+\end{equation}
+
+\subsubsection{Functionality Completion}
+This task requires the LLM to predict a list of technical details. We use a thresholded Exact Match (EM) score to measure performance.
+
+\textbf{Exact Match (EM):} 
+EM computes the average proportion of correctly predicted details. For the $i$-th entry, we compare every predicted detail $P_{i,j}$ against its reference detail $R_{i,j}$. A match is counted if their edit similarity meets a specified threshold $\tau$. We use two thresholds to evaluate the predictions: $\tau=1.0$ for a strict, perfect match, and $\tau=0.8$ for a relaxed match. It is calculated as:
+\begin{equation}
+    \text{EM}_\tau = \frac{1}{N} \sum_{i=1}^{N} \frac{\sum_{j=1}^{|R_i|} \mathbb{I}(\text{sim}(P_{i,j}, R_{i,j}) \ge \tau)}{|R_i|}
+\end{equation}
+
+\subsection{Implementation Details}
+\label{sec:impl_detail}
+\textbf{Dataset Construction and Evaluation.}
+We use Claude-Sonnet-4~\cite{claude} to generate intent-oriented functionality descriptions. Due to financial costs, we randomly sample a subset of 480 entries from \benchmark for evaluation. During evaluation, GPT-4.1~\cite{gpt} and Gemini-2.5-Pro~\cite{gemini} are employed as repository developers and address QA tasks. The sampling temperature for LLMs is set to 0.2. All experiments are repeated three times, and average results are reported to ensure reliability.
+
+\textbf{Method Configuration.}
+All automated methods are provided access to Claude-4-Sonnet~\cite{claude}, except for DeepWiki, which does not support model selection. These methods are implemented using their official replication packages or online platforms and executed with default hyperparameters.
+
+\input{Tables/RQ1}
+
+\textbf{Software Documentation Retrieval.}
+In the documentation-driven development process, developers consult documentation for relevant information. To mirror real-world workflows, we adopt a retrieval-based strategy, supplying the LLM with relevant documentation context for each task question:
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Chunking:} Documentation is divided into chunks of up to 512 tokens~\cite{sfr, coir}, with a 10\% overlap to preserve boundary context. Chunking follows the documentation structure: for approaches that generate summaries for each code snippet, chunks are based on syntax elements like classes and methods; for approaches that generate file or module-level summaries, chunks follow logical sections such as Markdown headings (``\#'', ``\#\#''). For DeepWiki, references to specific code fragments (e.g., ``\texttt{main.py 1-100}'') are replaced with the actual code.
+
+\item \textbf{Embedding:} All chunks and task questions are encoded as vectors using the advanced SFR-Embedding-Code-400M\_R model~\cite{sfr}, ensuring precise retrieval of relevant documentation.
+
+\item \textbf{Retrieval:} For each task question, the Top-K most relevant chunks are retrieved based on vector similarity and combined into context windows of different sizes (Top-1024, Top-2048, and Top-4096 tokens). We leverage these three sizes to simulate different levels of developer engagement with documentation. Token counting uses official packages~\cite{tiktoken, googlecloud}, and each retrieved chunk is annotated with its documentation file path.
+\end{enumerate}
+
+
+
+

@@ -1,0 +1,64 @@
+\begin{table*}[t]
+
+\centering
+\caption{Experimental results for the functionality-driven tasks. \textbf{Top XX} indicates the token size of the retrieved documentation context. \textbf{No Doc} refers to the setting of not inquiring about documentation. The largest and second-largest values in each column are highlighted with an \underline{underline}, and the largest value is also \textbf{bolded}.
+}
+\vspace{-1em}
+\label{tab:rq1_results}
+\setlength{\tabcolsep}{6.5pt}
+\renewcommand{\arraystretch}{0.75}
+\begin{tabular}{l|cc|cc|cc|cc|cc|cc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{6}{c|}{\textbf{GPT-4.1}} & \multicolumn{6}{c}{\textbf{Gemini-2.5-pro}} \\
+& \multicolumn{2}{c}{\textbf{Top 1024}} & \multicolumn{2}{c}{\textbf{Top 2048}} & \multicolumn{2}{c|}{\textbf{Top 4096}} & \multicolumn{2}{c}{\textbf{Top 1024}} & \multicolumn{2}{c}{\textbf{Top 2048}} & \multicolumn{2}{c}{\textbf{Top 4096}} \\ \midrule
+% TASK 1
+\rowcolor{mygreen} \multicolumn{13}{c}{\textbf{Functionality Detection}} \\ \midrule
+\rowcolor{gray!20} \textbf{Metric (\%)} & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC & B-ACC & MCC \\
+\midrule
+No Doc            & 46.72 & -8.03 & -- & -- & -- & -- & 50.63 & 1.18 & -- & -- & -- & -- \\ \midrule
+ \multicolumn{13}{c}{\textbf{Baseline Methods}} \\ \midrule
+H-Written        & 53.59 & 11.74  & 54.06 & 13.70 & 55.16 & 15.38 & 58.13 & 15.71 & \underline{61.56} & \underline{22.07} & 62.97 & 24.66 \\
+Chat       & 53.13 & 8.61 & 53.75 & 9.74 & 54.69 & 11.63 & 57.34 & 14.04 & 59.84 & 18.60 & 60.94 & 20.63 \\ \midrule
+
+ \multicolumn{13}{c}{\textbf{Repository-level Documentation Generation Methods}} \\ \midrule
+DeepWiki   & 52.19 & 6.94  & 52.50 & 8.01 & 53.91 & 10.26 & 53.91 & 8.48  & 55.78 & 11.80 & 56.09 & 12.15 \\
+AutoDoc    & 52.97 & 10.13  & 53.28 & 12.23 & 54.22 & 12.59 & 57.19 & 13.70 & 59.06 & 17.24 & 60.78 & 20.33 \\
+DocAgent   & \underline{54.69} & \underline{13.36} & \underline{54.84} & \underline{14.01} & \underline{55.63} & \underline{15.40} & \underline{59.69} & \underline{18.95} & 61.41 & 21.88 & \underline{63.13} & \underline{24.91} \\
+    RepoAgent  & \underline{\textbf{62.19}} & \underline{\textbf{25.92}} & \underline{\textbf{62.97}} & \underline{\textbf{26.74}} & \underline{\textbf{63.75}} & \underline{\textbf{27.77}} & \underline{\textbf{63.28}} & \underline{\textbf{25.04}} & \underline{\textbf{67.66}} & \underline{\textbf{33.38}} & \underline{\textbf{69.53}} & \underline{\textbf{37.23}} \\
+
+% TASK 2
+\midrule
+\rowcolor{myblue} \multicolumn{13}{c}{\textbf{Functionality Localization}} \\ \midrule
+\rowcolor{gray!20} \textbf{Metric (\%)} & F1 & IoU & F1 & IoU & F1 & IoU & F1 & IoU & F1 & IoU & F1 & IoU \\
+\midrule
+No Doc & 29.12 & 27.24 & -- & -- & -- & -- & 31.55 & 29.74 & -- & -- & -- & -- \\ \midrule
+ \multicolumn{13}{c}{\textbf{Baseline Methods}} \\ \midrule
+H-Written & 60.62 & 57.77 & 62.89 & 59.48 & 65.84 & 62.31 & \underline{62.02} & \underline{59.38} & \underline{65.97} & \underline{62.84} & \underline{68.17} & \underline{65.09} \\
+Chat & 59.71 & 56.37 & 62.93 & 59.33 & 64.43 & 60.59 & 60.93 & 58.19 & 61.97 & 58.86 & 63.21 & 59.47 \\
+\midrule
+ \multicolumn{13}{c}{\textbf{Repository-level Documentation Generation Methods}} \\ \midrule
+DeepWiki & 40.65 & 38.17 & 42.66 & 39.94 & 43.76 & 41.27 & 49.84 & 47.30 & 52.57 & 50.30 & 57.25 & 53.64 \\
+AutoDoc & 56.87 & 53.94 & 59.64 & 56.43 & 62.58 & 59.13 & 59.55 & 56.42 & 60.54 & 57.27 & 64.72 & 61.02 \\
+DocAgent & \underline{62.42} & \underline{58.91} & \underline{65.78} & \underline{62.08} & \underline{68.32} & \underline{64.89} & 61.74 & 58.75 & 63.69 & 60.20 & 65.96 & 62.15 \\
+RepoAgent & \underline{\textbf{63.64}} & \underline{\textbf{60.21}} & \underline{\textbf{67.43}} & \underline{\textbf{64.04}} & \underline{\textbf{70.19}} & \underline{\textbf{66.28}} & \underline{\textbf{67.48}} & \underline{\textbf{64.61}} & \underline{\textbf{69.83}} & \underline{\textbf{66.71}} & \underline{\textbf{71.11}} & \underline{\textbf{67.52}} \\ \midrule
+
+% TASK 3
+\rowcolor{mypink} \multicolumn{13}{c}{\textbf{Functionality Completion}} \\ \midrule
+\rowcolor{gray!20} \textbf{Metric (\%)} & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ & $\text{EM}_{1.0}$ & $\text{EM}_{0.8}$ \\
+\midrule
+No Doc      & 17.14 & 19.06 & -- & -- & -- & -- & 19.66 & 22.41 & -- & -- & -- & -- \\ \midrule
+ \multicolumn{13}{c}{\textbf{Baseline Methods}} \\ \midrule
+H-Written  & 24.54 & 27.23 & 25.00 & \underline{27.81} & \underline{25.58} & \underline{28.25} & 26.61 & 30.62 & 27.63 & \underline{31.39} & 28.09 & \underline{31.54} \\
+Chat     & 23.43 & 26.28 & 24.25 & 26.74 & 25.38 & 27.82 & 25.36 & 27.79 & 27.38 & 30.54 & 27.85 & 30.70 \\
+\midrule
+ \multicolumn{13}{c}{\textbf{Repository-level Documentation Generation Methods}} \\ \midrule
+DeepWiki & 22.23 & 24.45 & 22.78 & 24.74 & 23.16 & 25.53 & 25.44 & 28.47 & 26.23 & 29.85 & 26.37 & 29.73 \\
+AutoDoc  & 22.88 & 25.39 & 23.41 & 26.33 & 23.77 & 27.02 & 26.00 & 29.54 & 26.23 & 29.57 & 27.09 & 30.35 \\
+DocAgent & \underline{24.92} & \underline{27.61} & \underline{25.04} & 27.59 & 25.42 & 28.05 & \underline{28.09} & \underline{31.29} & \underline{28.30} & 30.82 & \underline{28.26} & 30.56 \\
+RepoAgent & \underline{\textbf{26.40}} & \underline{\textbf{29.37}} & \underline{\textbf{26.06}} & \underline{\textbf{28.53}} & \underline{\textbf{26.87}} & \underline{\textbf{29.72}} & \underline{\textbf{29.40}} & \underline{\textbf{33.20}} & \underline{\textbf{29.76}} & \underline{\textbf{32.95}} & \underline{\textbf{30.05}} & \underline{\textbf{33.88}} \\
+
+\bottomrule
+\end{tabular}
+\vspace{-1em}
+\end{table*}
+

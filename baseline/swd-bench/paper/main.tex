@@ -1,0 +1,214 @@
+% \documentclass[sigconf,review,anonymous]{acmart}
+% \documentclass[sigconf,review]{acmart}
+\documentclass[sigconf]{acmart}
+
+% \documentclass[acmsmall,screen]{acmart}
+
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+% \setcopyright{acmcopyright}
+% \copyrightyear{2024}
+% \acmYear{2024}
+% \acmDOI{XXXXXXX.XXXXXXX}
+
+% \acmConference[FSE 2025]{Make sure to enter the correct
+%   conference title from your rights confirmation emai}{}{}
+
+%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%%  June 03--05, 2018, Woodstock, NY}
+% \acmPrice{}
+% \acmISBN{978-1-4503-XXXX-X/18/06}
+
+\usepackage{multirow}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{color,xcolor,colortbl}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{bbding}
+\usepackage{microtype}
+\usepackage{tikz}   % For drawing
+\usepackage{setspace}
+\usepackage{bm}
+\tcbuselibrary{skins} % 引入 skins 库以支持 enhanced 和 shadow
+\usepackage{wrapfig}
+\newcommand{\yun}[1]{\textcolor{magenta}{#1}}
+
+\begin{document}
+
+\newtcolorbox{myquestionbox}[1][]{
+    width=.48\textwidth,
+    colback=black!5,
+    colframe=black!75,
+    boxrule=0.5pt,
+    arc=2mm,
+    fonttitle=\small\bfseries,
+    coltitle=black,
+    top=2mm, bottom=2mm,
+    left=3mm, right=3mm,
+    enhanced,
+    drop shadow={black!50!white, opacity=0.5},
+    #1 % 允许传入额外参数
+}
+
+\newtcolorbox{myfindbox}[1][]{
+    width=.48\textwidth,
+    colback=black!5,
+    colframe=black!75,
+    boxrule=0.5pt,
+    arc=2mm,
+    fonttitle=\small\bfseries,
+    coltitle=black,
+    top=2mm, bottom=2mm,
+    left=3mm, right=3mm,
+    enhanced,
+    drop shadow={black!50!white, opacity=0.5},
+    #1 % 允许传入额外参数
+}
+
+\definecolor{mygreen}{HTML}{E3F2D9}
+\definecolor{myblue}{HTML}{D4F4F1}
+\definecolor{mypink}{HTML}{FADBDF}
+
+% \title{SWD-Bench: Evaluating Repository-level Software Documentation via Functionality-driven Question Answering}
+
+% \title{Towards Evaluating Repository-level Software Documentation via Functionality-driven Question Answering}
+
+\title{Evaluating Repository-level Software Documentation via Question Answering and Feature-Driven Development}
+
+
+% \author{Xinchen Wang}
+% \email{200111115@stu.hit.edu.cn}
+% \affiliation{
+%     \institution{Harbin Institute of Technology, Shenzhen}
+%     \country{China}
+% }
+
+% \author{Ruida Hu}
+% \email{200111107@stu.hit.edu.cn}
+% \affiliation{
+%     \institution{Harbin Institute of Technology, Shenzhen}
+%     \country{China}
+% }
+
+
+% \author{Cuiyun Gao}
+% \authornotemark[2]
+% \email{gaocuiyun@hit.edu.cn}
+% \affiliation{
+%     \institution{Harbin Institute of Technology, Shenzhen}
+%     \country{China}
+% }
+
+% \author{Pengfei Gao}
+% \email{gaopengfei.se@bytedance.com}
+% \affiliation{
+%     \institution{Independent Researcher}
+%     \country{China}
+% }
+
+% \author{Chao Peng}
+% \email{pengchao.x@bytedance.com}
+% \affiliation{
+%     \institution{Independent Researcher}
+%     \country{China}
+% }
+
+\author{Xinchen Wang$^{1}$, Ruida Hu$^{1}$, Cuiyun Gao$^{1 \dagger}$, Pengfei Gao$^2$, Chao Peng$^{2 \dagger}$}
+
+\affiliation{ 
+  \institution{$^1$ Harbin Institute of Technology, Shenzhen, China}
+  \country{}
+  }
+\affiliation{%
+  \institution{$^2$ Independent Researcher, China}
+  \country{}
+  }
+
+\email{200111115@stu.hit.edu.cn,  
+200111107@stu.hit.edu.cn,
+gaocuiyun@hit.edu.cn,
+}
+\email{gaopf1995@gmail.com,
+chao.peng@acm.org
+}
+\thanks{$^{\dagger}$ Corresponding authors.}
+
+% \author{Anonymous Author(s)}
+% \renewcommand{\shortauthors}{Anonymous}
+
+\newcommand{\benchmark}{SWD-Bench\xspace}
+\newcommand{\moduleA}{High-quality data crawling and filtering stage\xspace}
+\newcommand{\moduleB}{Repository-level context retrieving stage\xspace}
+\newcommand{\moduleC}{Functionality-driven QA construction stage\xspace}
+
+\newcommand{\ie}{\textit{i}.\textit{e}.\xspace}
+\newcommand{\wxc}[1]{\textcolor{blue}{{#1}}}
+\newcommand{\rdhu}[1]{\textcolor{darkgreen}{{#1}}}
+\newcommand{\pf}[1]{\textcolor{red}{{PF: #1}}}
+\newcommand{\pc}[1]{\textcolor{cyan}{{Chao: #1}}}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+
+
+\begin{abstract}
+\label{sec:abstract}
+\input{Sections/0_abstract}
+
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10011007.10011074.10011099</concept_id>
+       <concept_desc>Software and its engineering~Software verification and validation</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Software and its engineering~Software verification and validation}
+
+\keywords{Software Documentation, Repository-level, Benchmark}
+
+
+\maketitle
+
+\section{INTRODUCTION}
+\label{sec:introduction}
+\input{Sections/1_Introduction}
+
+\section{TASK FORMULATION}
+\label{sec:task_formulation}
+\input{Sections/9_task_formulation}
+
+\section{METHODOLOGY}
+\label{sec:architecture}
+\input{Sections/3_Method}
+
+\section{EXPERIMENTAL SETUP}
+\label{sec:evaluation}
+\input{Sections/4_Evaluation}
+
+\section{EXPERIMENTAL RESULTS}
+\label{sec:experimental_result}
+\input{Sections/5_Experimental_Result}
+
+\section{DISCUSSION}
+\label{sec:discussion}
+\input{Sections/6_Discussion}
+
+\section{RELATED WORK}
+\label{sec:related}
+\input{Sections/7_Related_Work}
+
+\section{CONCLUSION}
+\label{sec:conclusion}
+\input{Sections/8_Conclusion}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{Citation} 
+\end{document}
