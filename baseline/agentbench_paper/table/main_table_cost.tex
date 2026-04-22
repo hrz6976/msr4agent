@@ -1,0 +1,23 @@
+\begin{table}[t]
+\caption{The average number of steps (lower is better) and execution cost (in USD --- lower is better) per \swebench{} and \planbench{} instance without \agentsmds{} (\noplan), with LLM-generated \agentsmds{} (LLM), and with developer-written \agentsmds{} (\textsc{Hum}). We \textbf{bold} the best setting.}
+\label{tab:main_cost}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{ll cc cc cc cc}
+\toprule
+& \multirow{2}{*}{Type} & \multicolumn{2}{c}{\sonnet{}} & \multicolumn{2}{c}{\gptfive{}} & \multicolumn{2}{c}{\textsc{GPT-5.1 M.}} & \multicolumn{2}{c}{\textsc{Qwen3-30B}} \\
+\cmidrule{3-10}
+&& Steps & Cost & Steps & Cost & Steps & Cost & Steps & Cost \\
+\midrule
+\multirow[c]{2}{*}{\shortstack[c]{\textsc{SWE-}\\\textsc{Bench}\\\textsc{Lite}}} & \noplan{} & \textbf{54.4} & \textbf{1.30} & \textbf{12.5} & \textbf{0.32} & \textbf{40.9} & \textbf{0.18} & \textbf{29.7} & \textbf{0.12} \\
+\cmidrule{2-10}
+& LLM & 57.2 & 1.51 & 12.7 & 0.43 & 45.2 & 0.22 & 32.2 & 0.13 \\
+\midrule
+\multirow[c]{4}{*}{\shortstack[c]{\textsc{Agent-}\\\textsc{bench}}} & \noplan & \textbf{40.7} & \textbf{1.15} & \textbf{12.1} & \textbf{0.38} & \textbf{40.6} & \textbf{0.18} & \textbf{31.5} & \textbf{0.13} \\
+\cmidrule{2-10}
+& LLM & 46.5 & 1.33 & 13.1 & 0.57 & 46.9 & 0.20 & 34.2 & 0.15 \\
+\cmidrule{2-10}
+& \textsc{Hum.} & 45.3 & 1.30 & 13.6 & 0.54 & 46.6 & 0.19 & 32.8 & 0.15 \\
+\bottomrule 
+\end{tabular}}
+\end{table}

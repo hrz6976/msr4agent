@@ -1,0 +1,267 @@
+\section{Prompts}
+\label{app:prompt}
+
+In this section, we detail all prompts used throughout this work.
+\vspace{-0.1in}
+
+\subsection{\planbench{} instances generation}
+
+We detail below the prompts used for filtering pull requests, setting up the instances, describing the instances, and generating the test cases.
+
+\begin{promptbox}[Filtering pull requests]
+You are evaluating pull request \placeholder{pr\_number} for suitability as a regression-test
+task in SWE-bench style datasets. Decide whether the PR primarily introduces deterministic, testable behaviour.
+Such behaviors typically include bug fixes, but can also include feature additions as long as it is possible to write a precise specification that allows testing the new feature independently of the implementation.
+
+\medskip
+\textbf{Repository:} \placeholder{repo\_full\_name}\\
+\textbf{Title:} \placeholder{title}\\
+\textbf{Author:} \placeholder{author}\\
+\textbf{Merged at:} \placeholder{merged\_at}
+
+\medskip
+\textbf{PR description}\\
+\placeholder{body}
+
+\medskip
+\textbf{Diff excerpt}\\
+\placeholder{excerpt}
+
+\medskip
+\textbf{Deliverables}
+\begin{enumerate}[leftmargin=1.6em, itemsep=0.25em]
+  \item Do \textbf{not} modify existing project code.
+  \item Create the JSON file \placeholder{decision\_path} with UTF-8 encoded content describing your
+  decision using this schema:
+
+  \begin{schemabox}
+{
+  "pr_number": <int>,
+  "suitable": <bool>,
+  "needs_manual_review": <bool>,
+  "decision": "include" | "exclude" | "manual_review",
+  "rationale": "<short explanation>",
+  "key_files": ["relative/file.py", "..."],
+  "risk_factors": ["<short string>", "..."]
+}
+  \end{schemabox}
+
+  \begin{itemize}[leftmargin=1.6em, itemsep=0.25em]
+    \item Set \texttt{"decision"} to \texttt{"include"} only when you are confident the PR is a self-contained
+    bug fix that can be validated via regression tests.
+    \item Use \texttt{"manual\_review"} if you are uncertain.
+  \end{itemize}
+  \item Stage the JSON file and finish. Do not stage anything else.
+\end{enumerate}
+\end{promptbox}
+
+
+\begin{promptbox}[Setting up the instance]
+Your goal is to help developers set up their environment to run code in the repository and be able to run the current tests. You should write a list of all commands needed to (i) set up the environment from scratch, and (ii) run the existing tests. You need to make sure that the commands you provide actually work for you. The setup is considered valid if most of the tests are passing after running \textbf{exactly} your setup commands and the test commands you provide.
+
+\medskip
+\textbf{Test runner requirement}\\
+To run the repository tests, create a file at the root of the repository called \texttt{run\_tests.py} that:
+\begin{itemize}[leftmargin=1.6em, itemsep=0.25em]
+  \item executes all tests,
+  \item parses the test output,
+  \item writes a JSON file at the repository root named \texttt{test\_results.json} with schema:
+\end{itemize}
+
+\begin{schemabox}
+{"test_name": <bool>, ...}
+\end{schemabox}
+
+where each \texttt{test\_name} is the name of a test and the boolean indicates whether the test passed (\texttt{true}) or failed (\texttt{false}).
+
+\medskip
+\textbf{Deliverables}
+\begin{enumerate}[leftmargin=1.6em, itemsep=0.25em]
+  \item Create the JSON file \placeholder{decision\_path} with UTF-8 encoded content explaining the steps to set up the environment and run the tests (using the \texttt{run\_tests.py} script you created):
+  \begin{schemabox}
+{
+  "setup_commands": ["<command1>", "<command2>", "..."],
+  "test_commands": ["<command1>", "<command2>", "..."]
+}
+  \end{schemabox}
+  \item Create the script \texttt{run\_tests.py} at the root of the repository.
+  \item Stage the JSON file and the script and finish. Do not stage anything else.
+\end{enumerate}
+
+\medskip
+\placeholder{example\_files\_section}
+\end{promptbox}
+
+
+\begin{promptbox}[Describing the instance]
+You are given a pull request (PR) and the related issues for a given GitHub repository.
+Your goal is to format this information into a clear GitHub Issue following the template below.
+
+\begin{itemize}[leftmargin=1.6em, itemsep=0.25em]
+  \item For the \textbf{Steps to Reproduce} field, only write the steps you actually took to reproduce the issue in your specific environment. Make those steps \textbf{reproducible and minimal}.
+  \item Developers should be able to implement a solution similar to the one provided in the PR, but the Issue should \textbf{not leak the solution}.
+  \item Save your output in Markdown format in the file \placeholder{metadata\_relpath}.
+\end{itemize}
+
+\medskip
+\textbf{Feature requests: Specification required}\\
+Additionally, for issues about \textbf{adding a new feature} (rather than fixing a bug), include a \textbf{precise Specification} describing the desired behavior. It must be detailed enough to allow independent testing without relying on implementation details from the PR.
+
+\begin{itemize}[leftmargin=1.6em, itemsep=0.25em]
+  \item Specify inputs (types, valid ranges, edge cases), outputs, side effects, and any required error handling.
+  \item If the PR includes human-readable outputs (logs, UI text, error messages, \dots), include them in the specification and state that fixes must use \textbf{exactly} those messages.
+\end{itemize}
+
+\medskip
+\textbf{Issue template (copy into your Markdown output)}
+\begin{schemabox}
+### Description
+(Provide a clear and concise description of the problem.)
+
+### Steps to Reproduce
+1. [Step 1]
+2. [Step 2]
+3. ...
+
+### Expected Behavior (if applicable)
+(Explain what you expected to happen.)
+
+### Actual Behavior (if applicable)
+(Explain what actually happened.)
+
+### Specification (if applicable)
+(Provide a precise specification of the desired behavior.)
+
+### Additional Information
+(Add screenshots, logs, or other helpful details.)
+\end{schemabox}
+
+\medskip
+\textbf{Data for PR \#}\placeholder{pr\_number}\textbf{ in repository }\placeholder{repo}\textbf{ at commit }\placeholder{commit\_sha}
+
+\medskip
+\textbf{PR description}\\
+\placeholder{pr\_description}
+
+\medskip
+\textbf{Referenced issues mentioned in the PR}\\
+\placeholder{referenced\_issues\_text}
+
+\medskip
+\textbf{PR patch}\\
+\placeholder{pr\_patch}
+
+\medskip
+\textbf{PR test (if any)}\\
+\placeholder{pr\_test\_patch}
+
+\medskip
+\textbf{Key files identified during triage}\\
+\placeholder{key\_files\_text}
+\end{promptbox}
+
+
+
+\begin{promptbox}[Generating the test cases]
+You are generating regression tests for pull request \placeholder{pr\_number} in \placeholder{repo}. The current checkout is the base (pre-fix) commit \placeholder{commit\_sha}.
+
+\medskip
+\textbf{Problem description}\\
+\placeholder{problem\_description}
+
+\medskip
+\textbf{PR patch}\\
+\placeholder{pr\_patch}
+
+\medskip
+\textbf{PR test (if any)}\\
+\placeholder{pr\_test\_patch}
+
+\medskip
+\textbf{Requirements}
+\begin{enumerate}[leftmargin=1.6em, itemsep=0.35em]
+  \item Focus on \textbf{deterministic} tests that expose the bug fixed by this PR. Tests should target \textbf{expected behavior} and must \textbf{not} rely on internal implementation details (variables, hidden helpers, etc.). They should fail on the base commit and pass on the merge commit (after applying the PR patch). You must verify this property. You may apply the provided patch using \texttt{git apply}. If a specification is provided in the problem description, tests must \textbf{exactly} align with it. Avoid tests that depend on incidental choices (variable names, function names, strings, \dots) unless explicitly required by the specification.
+  \item Create \texttt{run\_pr\_tests.py} at the repository root that executes \emph{only} the tests you created, parses test output, and writes JSON results to \texttt{pr\_test\_results.json} with schema:
+  \begin{schemabox}
+{"test_name": <bool>, ...}
+  \end{schemabox}
+  You may use \texttt{run\_tests.py} as a reference. Note: your script should only run the tests you created for this PR.
+  \item Ensure new tests match the project's existing test style and conventions. First review existing tests to understand structure and framework. You may reuse tests from the PR if appropriate.
+  \item All new tests must be in \textbf{new files} created as part of this work. Do \textbf{not} modify any existing test files.
+  \item For \texttt{test\_commands}, include any necessary steps (sourcing environments, setting variables, etc.) so tests run correctly in a fresh shell.
+\end{enumerate}
+
+\medskip
+\textbf{Deliverables}
+\begin{enumerate}[leftmargin=1.6em, itemsep=0.35em]
+  \item Create the new test files with your proposed tests.
+  \item Create the JSON file \placeholder{metadata\_relpath} with UTF-8 content explaining how to run the tests:
+  \begin{schemabox}
+{
+  "test_commands": ["<command1>", "<command2>", "..."],  # Commands to run the PR tests with `run_pr_tests.py`
+  "test_files": ["path/to/test_file1", "path/to/test_file2", "..."]
+}
+  \end{schemabox}
+  \item Create the script \texttt{run\_pr\_tests.py} at the root of the repository.
+  \item Stage the JSON file and the script and finish. Do not stage anything else.
+\end{enumerate}
+\end{promptbox}
+
+\subsection{Analyzing Traces of Coding Agents}
+\label{app:prompts:trace_analysis}
+
+To analyze the tool calls made by the coding agents, we use \gptoss with the prompt below.
+
+\begin{promptbox}[Analyzing coding agent traces]
+You are labeling a tool call with a single intent category.
+
+\medskip
+\textbf{Goal:} choose a category name that is:
+\begin{itemize}[leftmargin=1.6em, itemsep=0.25em]
+  \item \textbf{Right-sized granularity:} more specific than ``execute command'' but not tied to exact arguments.
+  \item \textbf{Reusable:} should apply to many future tool calls.
+  \item \textbf{Clean:} do \textbf{not} include file paths, flags, quoted strings, IDs, repo names, or counts.
+  \item \textbf{Format:} 2--5 words, lowercase, verb + object (e.g., \texttt{run tests}, \texttt{search codebase}). Avoid too-generic names like \texttt{run scripts}; specify what the script does (e.g., \texttt{compile code}).
+\end{itemize}
+You must also explain which tool is being used (e.g., \texttt{pytest}, \texttt{rg}, \dots) in a dedicated field.
+
+\medskip
+\textbf{You will be given}
+\begin{itemize}[leftmargin=1.6em, itemsep=0.25em]
+  \item \textbf{tool\_call:} the command or structured tool invocation
+  \item \textbf{tool\_output:} optional output text
+\end{itemize}
+
+\medskip
+\textbf{Existing categories (use one if it fits):} \placeholder{existing\_tool\_names}
+
+\medskip
+\textbf{Decision rules}
+\begin{enumerate}[leftmargin=1.6em, itemsep=0.25em]
+  \item If one existing category fits, use it \textbf{exactly}.
+  \item If none fit, create \textbf{one} new category that:
+  \begin{itemize}[leftmargin=1.6em, itemsep=0.2em]
+    \item is \textbf{not} tool-specific (avoid \texttt{pytest}, \texttt{kubectl}, \texttt{terraform}, etc.)
+    \item would likely match \textbf{5+} future tool calls
+  \end{itemize}
+  \item If the tool call does multiple things, pick the \textbf{primary intent} as the category (mention secondary intents in reasoning).
+\end{enumerate}
+
+\medskip
+\textbf{Return JSON only}
+\begin{schemabox}
+{
+  "tool_name": "<category>",
+  "tool_used": "<specific tool or executable being invoked>",
+  "reasoning": "<1-3 sentences: why this is the primary intent; include key clues from call/output; mention secondary intents if any>"
+}
+\end{schemabox}
+
+\medskip
+\textbf{Tool call}
+\placeholder{tool\_call}
+
+\medskip
+\textbf{Tool output (if any)}
+\placeholder{tool\_output}
+\end{promptbox}

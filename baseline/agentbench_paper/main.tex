@@ -1,0 +1,69 @@
+\pdfminorversion=7
+
+
+\documentclass{article}
+
+\PassOptionsToPackage{x11names}{xcolor}
+\usepackage[preprint]{icml2026}
+
+\PassOptionsToPackage{numbers, compress, sort, square}{natbib}
+
+
+\input{headers/math_commands.tex}
+\input{headers/header-lqa}
+\input{headers/header}
+\input{headers/header-lqa-tail}
+
+
+\pgfplotsset{compat=1.18}
+
+\icmltitlerunning{Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?}
+
+\begin{document}
+
+\twocolumn[
+  \icmltitle{Evaluating AGENTS.md:\\ Are Repository-Level Context Files Helpful for Coding Agents?}
+
+
+
+  \icmlsetsymbol{equal}{*}
+
+  \begin{icmlauthorlist}
+    \icmlauthor{Thibaud Gloaguen}{eth}
+    \icmlauthor{Niels Mündler}{eth}
+    \icmlauthor{Mark Müller}{lstar}
+    \icmlauthor{Veselin Raychev}{lstar}
+    \icmlauthor{Martin Vechev}{eth}
+  \end{icmlauthorlist}
+
+  \icmlaffiliation{eth}{Department of Computer Science, ETH Zurich}
+  \icmlaffiliation{lstar}{LogicStar.ai}
+
+  \icmlcorrespondingauthor{Thibaud Gloaguen}{thibaud.gloaguen@inf.ethz.ch}
+  \icmlcorrespondingauthor{Niels Mündler}{niels.mundler@inf.ethz.ch}
+
+  \icmlkeywords{Machine Learning, ICML}
+
+  \vskip 0.3in
+]
+
+
+
+\printAffiliationsAndNotice{}  %
+
+\input{sections/abstract.tex}
+
+\input{sections/introduction.tex}
+\input{sections/background.tex}
+\input{sections/methods.tex}
+\input{sections/experiments.tex}
+\input{sections/conclusion.tex}
+
+\clearpage
+
+\bibliography{references}
+\bibliographystyle{icml2026}
+
+\input{sections/appendix}
+
+\end{document}

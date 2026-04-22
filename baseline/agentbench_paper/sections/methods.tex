@@ -1,0 +1,76 @@
+\section{\planbench{}}
+\label{sec:method}
+
+In this Section, we discuss the requirements for \planbench{}, a \textsc{SWE-Bench}-like benchmark that targets the evaluation of developer-provided \agentsmds{}, its generation process, and its statistics.
+
+\subsection{Notation and Definitions}
+\label{sec:notation-success}
+We first introduce the notation to describe codebases, their test suites, and changes to these codebases in the form of patches.
+Following the notation of \citet{mundler2024swt}, we denote a codebase, or repository $R$ after applying patch $X$ as $R \circ X$.
+Several patches can be applied sequentially, \ie{} $R \circ X \circ Y$ is the codebase $R$ after applying a first patch $X$ and then a second one $Y$.
+
+\newcommand{\myexec}{\mathrm{exec}}
+\newcommand{\dvS}{\mathcal{S}}
+\newcommand{\dvT}{\mathcal{T}}
+A \emph{test suite} $\dvT$ is a collection of tests that is used to validate the functionality of code in the repository.
+Executing a test suite $\dvT$ on repository state $R$ returns $\myexec_R(\dvT) \in \{\textsc{pass}, \textsc{fail}\}$ either indicating that all tests in the suite passed or that at least one test failed.
+An \emph{issue} $I$ is a task for autonomous completion by the coding agent, such as resolving a bug or implementing a requested feature.
+We denote quadruples of $(I, R, \dvT, X^{*})$ as \emph{instances}, where the coding agent is tasked with predicting a patch $\hat{X}$ given issue $I$ and repository state $R$ such that $\myexec_{R \circ \hat{X}}(\dvT) = \textsc{pass}$, and $X^{*}$ is the golden patch for that instance.
+We define the \emph{success rate} $\dvS$ as the percentage of predicted patches $\hat{X}_i$ for instances $(I_i, R_i, \dvT_i, X^{*}_i)$ where $\myexec_{R_i \circ \hat{X}_i}(\dvT_i) = \textsc{pass}$.
+
+
+\subsection{Generation of \planbench{} Instances}
+To construct \planbench{}, we use a five-stage construction process summarized below. 
+We defer all the prompts used for this process to \cref{app:prompt}.
+
+\paragraph{Requirements}
+We aim to evaluate the impact of both automatically generated \agentsmds{} and developer-written \agentsmds{} on the success rate of coding agents on real-world tasks and codebases. 
+The primary source for real-world codebases is open-source projects and their publicly tracked and documented changes, so-called pull requests (PRs). 
+In order to obtain developer-written \agentsmds, we need to source PRs from projects that adopted \agentsmds{}. 
+This is challenging, because \agentsmds{} have only been formalized in August 2025, and have not been frequently used before. 
+Further, the adoption of \agentsmd{} is not uniform across the industry: even at the time of writing, many repositories do not include \agentsmds{}.
+
+\paragraph{Finding repositories}
+We first use GitHub search to build a list of potential candidate repositories to extract instances from.
+Specifically, we select codebases that contain a \agentsmd{} such as \texttt{AGENTS.md} or \texttt{CLAUDE.md} at the root directory. Next, we filter down to those using Python as the main language and featuring a test suite. Finally, we filter for projects with many publicly documented changes, requiring at least $400$ PRs.
+This criterion allows us to select codebases from which we can extract at least $10$ instances after our rigorous post-processing.
+
+\paragraph{Filtering pull requests}
+Given a repository, we filter PRs to retain those that are most likely to generate higher-quality instances using a combination of rule-based checks and an LLM agent.
+We only keep PRs that satisfy the following two criteria: they should reference at least one issue, and they should modify at least one Python file.
+Further, we filter for PRs that are assessed by the agent to introduce deterministic, testable behaviors that are suitable for \swebench-like regression tests.
+We notice that, because the use of \agentsmds{} is a recently emerging trend, most repositories containing \agentsmds{} are niche.
+These niche repositories have less strict rules regarding pull requests, and thus most PRs may not include specific tests.
+To enable building instances from these more niche repositories, we therefore do not require PRs to edit unit tests that validate the code changes, in contrast to \swebench{}, which focused on large and popular repositories and requires PRs to contain unit tests.
+
+\paragraph{Environment Set-Up}
+For every PR and corresponding repository state, we set up an execution environment such that its test suite can be run, using a coding agent.
+Specifically, we ask the agent to produce a small script that i) sets up the execution environment, ii) runs the test suite and iii) stores the results as a machine-readable dictionary at the root of the repository.
+We only keep PRs where the resulting dictionary contains at least one passing test, which corresponds to $87\%$ of the filtered instances.
+
+\paragraph{Task Descriptions}
+Many of the smaller repositories we used to source \planbench{} do not enforce strict requirements on the quality of PR and issue descriptions. As a result, many issues are too imprecise and underspecified to solve the task in a testable manner (\eg in some cases, the PR body is empty).
+Further, some PRs implement new features, which would require detailed descriptions about expected behavior and interfaces.
+We therefore use a third LLM agent to produce a standardized and detailed task description $I$ based on the PR description, associated issues if available, and the original patch $X^{*}$.
+This standardized task description is divided into 6 sections: description, steps to reproduce, expected behavior, observed behavior, specification, and additional information.
+Importantly, we ask the agent not to leak the solution in the generated task description, and to provide precise specifications. 
+We randomly sampled and inspected 10\% of the generated instances, and found that none of them leaked the solution.
+
+\paragraph{Generating Unit Tests}
+As most collected PRs do not modify or add unit tests that we could use to check the correctness of any given implementation, we use an LLM agent to generate such unit tests.
+We provide the agent with the standardized task description $I$, the test files modified by the PR, if available, the original code changes $X^{*}$ made by the PR, and the base state of the repository $R$.
+We then ask it to generate tests that pass for any implementation that resolves the described task. We verify that the added tests fail on $R$ and pass on $R \circ X^{*}$.
+Finally, we manually improve tests that are over-specified (\ie tests that check for implementation details not specified in the task description), resulting in newly generated tests $\mathcal{T}_i^{X}$.
+We further determine all tests of the repository test suite $\mathcal{T}_i^{R}$ that pass on the patched code, i.e., the maximal set $\mathcal{T}_i^{R*} \subseteq \mathcal{T}_i^{R}$, such that $\myexec_{R_i \circ X_i^{*}}(\mathcal{T}_i^{R*}) = \textsc{pass}$, and obtain the final test set $\mathcal{T}_{i} = \mathcal{T}^{X}_{i} \uplus \mathcal{T}^{R*}_{i}$.
+The resulting tests achieve an average coverage of 75\% of the modified code (see \cref{tab:overview_dataset}).
+
+\paragraph{Evaluation}
+We thus obtain \planbench{} instances $i$, each consisting of a task description $I_i$, a codebase $R_i$, golden patch $X^{*}_i$, and a set of tests $\mathcal{T}_{i}$.
+During evaluation, we first set up the environment before prompting the coding agent with the task description $I_i$, retrieving the predicted patch $\hat{X}_i$, and measuring $\myexec_{R_i \circ \hat{X}_i}(\mathcal{T}_i)$.
+
+\input{figures/planbench/overview_planbench.tex}
+\input{table/overview_planbench.tex}
+
+\paragraph{Overview of \planbench{}}
+Using this process, we obtained 138 instances from a total of 5694 PRs from 12 repositories that meet our criteria, using \gptfive{} with \codex{} as the agent.
+We visualize the distribution over repositories in \cref{fig:overview_planbench} and show key statistics of \planbench{} in \cref{tab:overview_dataset}. In comparison to \swebench{}, our dataset is both more evenly distributed over repositories and has otherwise similar statistics.

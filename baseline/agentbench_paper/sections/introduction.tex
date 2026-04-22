@@ -1,0 +1,32 @@
+\vspace{-2mm}
+\section{Introduction}
+\label{sec:introduction}
+
+Coding agents are being rapidly adopted across the software engineering industry \citep{cursor}, and providing \agentsmds{} like \texttt{AGENTS.md}, a \texttt{README} specifically targeting agents, has become common practice. With various industry leaders \citep{AGENTSMd2025,UsingClaudeMdFiles} recommending this approach to adapt their agents to specific repositories, \agentsmds{} are now supported by most popular agent frameworks, and included in over 60'000 open-source repositories at the time of writing, as reported by \citet{AGENTSMd2025}. 
+
+These \agentsmds{} typically contain a repository overview and information on relevant developer tooling, aiming to help coding agents to navigate a given repository more efficiently, run build and test commands correctly, adhere to style guides and design patterns, and ultimately to solve tasks to the user's satisfaction more frequently.
+To date, despite their widespread adoption, the impact of \agentsmds{} on the coding agent's ability to solve complex software engineering tasks has not been rigorously studied.
+This is due to two key challenges: i) because of their recent introduction, \agentsmds{} are not available for instances of prior benchmarks, and ii) popular, well-known repositories, typically used to create such benchmarks, are not representative of most codebases. As a result, a rigorous evaluation of the \agentsmds{} used in practice requires a new, complementary benchmark that contains only issues from less popular repositories with developer-committed \agentsmds{}.
+
+\input{figures/main_figure.tex}
+
+\paragraph{This work: Benchmarking \agentsmds{}' impact on resolving GitHub issues}
+In this work, we investigate the effect of actively used \agentsmds{} on the resolution of real-world coding tasks.
+We evaluate agents both in popular and less-known repositories, and, importantly, with \agentsmds{} provided by repository developers.
+For this purpose, we construct a novel benchmark (\cref{fig:overview}, left), \planbench{}, comprising Python software engineering tasks, created specifically from real GitHub issues.
+The benchmark contains $138$ unique instances, covering both bug-fixing and feature addition tasks across $12$ recent and niche repositories, which all feature developer-written \agentsmds{}. \planbench{} complements \swebench{}, which we leverage for the evaluation of automatically generated \agentsmds{} on popular repositories.
+We evaluate coding agents in three settings (\cref{fig:overview}, middle): without any \agentsmd{}, with \agentsmds{} automatically generated using agent-developer recommendations, and with the developer-provided \agentsmd{}.
+Our code to generate \planbench{} instances and evaluate coding agents is available \href{https://github.com/eth-sri/agentbench}{here}.
+
+Surprisingly, we observe that \emph{developer-provided files only marginally improve performance} compared to omitting them entirely (an increase of 4\% on average), while \emph{LLM-generated \agentsmds{} have a small negative effect} on agent performance (a decrease of 3\% on average).
+These observations are robust across different LLMs and prompts used to generate the \agentsmds{}.
+In a more detailed analysis (\cref{fig:overview}, right), we observe that \agentsmds{} lead to increased exploration, testing, and reasoning by coding agents, and, as a result, increase costs by over 20\%.
+We therefore suggest omitting LLM-generated \agentsmds{} for the time being, contrary to agent developers' recommendations, and including only minimal requirements (\eg specific tooling to use with this repository).
+We hope our evaluation framework will aid agent and model developers to improve the helpfulness of LLM-generated \agentsmds{}.
+
+\paragraph{Key contributions} Our key contributions are:
+\begin{enumerate}
+    \item \planbench{}, a new curated benchmark for the impact of actively used \agentsmds{} on agents' ability to solve real-world software engineering tasks.
+    \item An extensive evaluation of different coding agents and underlying models on \planbench{} and \swebench{}, showing that LLM-generated \agentsmds{} tend to decrease agent performance, across models or prompts used to generate them, while developer-written \agentsmds{} tend to slightly improve it.
+    \item A detailed investigation of agent traces, showing that \agentsmds{} lead to more thorough testing and exploration by coding agents.
+\end{enumerate}

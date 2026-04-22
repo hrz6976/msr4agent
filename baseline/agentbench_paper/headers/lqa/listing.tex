@@ -1,0 +1,166 @@
+
+
+
+\usepackage{listings}
+
+\usepackage{textcomp}
+
+\usepackage{xcolor}
+
+
+
+
+
+\usepackage[scaled=0.8]{beramono}
+
+
+
+
+\definecolor{ckeyword}{HTML}{7F0055}
+\definecolor{ccomment}{HTML}{3F7F5F}
+\definecolor{cstring}{HTML}{2A0099}
+
+
+\lstdefinestyle{numbers}{
+	numbers=left,
+	framexleftmargin=20pt,
+	numberstyle=\tiny,
+	firstnumber=auto,
+	numbersep=1em,
+	xleftmargin=2em
+}
+
+\lstdefinestyle{layout}{
+	frame=none,
+	captionpos=b,
+}
+
+\lstdefinestyle{comment-style}{
+	morecomment=[l]//,
+	morecomment=[s]{/*}{*/},
+	commentstyle={\color{ccomment}\itshape},
+}
+
+\lstdefinestyle{string-style}{
+	showstringspaces=false,%
+}
+
+\lstdefinestyle{keyword-style}{
+	keywordstyle={\ttfamily\bfseries},
+	morekeywords={
+		function,
+		constructor,
+		int,
+		bool,
+		return,
+		returns,
+		uint
+	},
+	morekeywords = [2]{},
+	keywordstyle = [2]{\text},
+	sensitive=true,
+}
+
+\lstdefinestyle{input-encoding}{
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=
+	{ℝ}{$\reals$}1%
+	{→}{$\rightarrow$}1%
+	{α}{$\alpha$}1%
+	{β}{$\beta$}1%
+	{λ}{$\lambda$}1%
+	{θ}{$\theta$}1%
+	{ϕ}{$\phi$}1%
+}
+
+\lstdefinestyle{escaping}{
+	moredelim={**[is][\color{blue}]{\%}{\%}},
+	moredelim={**[is][\color{pastelgreen}]{??}{??}},
+	mathescape=true
+}
+
+\lstdefinestyle{default-style}{
+	basicstyle=\fontencoding{T1}\ttfamily\footnotesize,
+	style=numbers,
+	style=layout,
+	style=comment-style,
+	style=string-style,
+	style=keyword-style,
+	style=input-encoding,
+	style=escaping,
+	tabsize=2,
+	upquote=true
+}
+
+
+\lstdefinelanguage{BASIC}{
+	language=C++,
+	style=default-style
+}[keywords,comments,strings]%
+
+\lstdefinelanguage{JavaScript}{
+morekeywords=[1]{break, continue, delete, else, for, function, if, in,
+new, return, this, typeof, var, void, while, with, const, let},
+morekeywords=[2]{false, null, true, boolean, number, undefined, string,
+Array, Boolean, Date, Math, Number, String, Object},
+morekeywords=[3]{eval, parseFloat, escape, unescape},
+sensitive,
+morecomment=[s]{/*}{*/},
+morecomment=[l]//,
+morecomment=[s]{/**}{*/}, %
+morestring=[b]',
+morestring=[b]"
+}[keywords, comments, strings]
+\definecolor{delim}{RGB}{20,105,176}
+\definecolor{numb}{RGB}{106, 109, 32}
+\definecolor{string}{rgb}{0.64,0.08,0.08}
+
+\lstdefinelanguage{json}{
+    showspaces=false,
+    showtabs=false,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
+    upquote=true,
+    morestring=[b]",
+    morecomment=[l]//,
+    stringstyle=\color{string},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dred}{rgb}{0.545,0,0}
+\definecolor{dblue}{rgb}{0,0,0.545}
+\definecolor{lgrey}{rgb}{0.9,0.9,0.9}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\lstdefinelanguage{cpp}{
+      breaklines=true,               
+      postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}},
+      deletekeywords={...},          
+      escapeinside={\%*}{*)},                  
+      language=C++,                
+      keywordstyle=\color{purple},  
+      morekeywords={string,float}, 
+      identifierstyle=\color{black},
+      stringstyle=\color{blue},      
+      showspaces=false,               
+      showstringspaces=false,        
+      showtabs=false,                
+      tabsize=5,                     
+    }
+
+\lstset{language=BASIC}

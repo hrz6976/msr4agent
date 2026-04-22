@@ -1,0 +1,6 @@
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=.9\linewidth]{figures/overview.pdf}
+    \caption{Overview of our evaluation pipeline. We begin with real-world repositories and tasks derived from past pull requests. For each repository state, we generate three settings: \textcircled{\tiny{1}} If a developer-provided \agentsmd{} exists, we include it in the repository. In \textcircled{\tiny{2}}, we omit the \agentsmd{}. \textcircled{\tiny{3}} We use the coding agent's recommended settings to generate the \agentsmd{}. Then we pass the repository and \agentsmd{} to the coding agent and instruct it to autonomously resolve the task. We finally analyze the trace for behavioral changes and apply the generated patch to check for task resolution success.}
+    \label{fig:overview}
+\end{figure*}

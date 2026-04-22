@@ -1,0 +1,24 @@
+\begin{wraptable}[7]{r}{0.5\textwidth}
+  \centering
+  \vspace{-0.4in}
+  \caption{Equivalence classes used to group the different tool calls.}
+  \label{tab:mapping}
+  \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lll}
+      \toprule
+      \claudecode{} tool & \codex{} & \qwencode{} \\
+      \midrule
+      Edit & \texttt{sed} & \texttt{sed}, \texttt{edit}  \\
+      \midrule
+      Write & \texttt{apply\_patch} & \texttt{write\_file}\\
+      \midrule
+      Grep & \texttt{grep}, \texttt{rg} & \texttt{grep} \\
+      \midrule
+      Read & \texttt{cat} & \texttt{cat}, \texttt{read\_file}, \texttt{search\_file\_content} \\
+      \midrule
+      TodoWrite & \texttt{update\_plan} & \texttt{todo\_write} \\
+
+      \bottomrule
+    \end{tabular}%
+  }
+\end{wraptable}

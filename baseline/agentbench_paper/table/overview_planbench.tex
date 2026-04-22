@@ -1,0 +1,26 @@
+\begin{table}[t]
+\caption{Average, minimum, and maximum of key statistics of \planbench{} across the 138 instances.
+For \agentsmds{}, a section is the content between Markdown headers.}
+\label{tab:overview_dataset}
+\centering
+\resizebox{0.8\linewidth}{!}{
+\begin{tabular}{ll ccc}
+\toprule
+&& Mean & Min & Max \\
+\midrule
+\multirow{1}{*}{PR body} & \# words & 415.3 & 5 & 4961 \\
+\midrule
+\multirow{1}{*}{Issue $I$} & \# words & 211.6 & 96 & 500 \\
+\midrule
+\multirow{1}{*}{Codebase} & \# files & 3337 & 151 & 26602 \\
+\midrule 
+\multirow{2}{*}{PR patch} & \# lines edited & 118.9 & 12 & 1973 \\
+& \# files edited & 2.5 & 1 & 23 \\
+\midrule 
+\multirow{1}{*}{Test} & Coverage & 75\% & 2.5\% & 100\% \\
+\midrule
+\multirow{2}{*}{\Agentsmd} & \# words & 641.0 & 24 & 2003 \\
+& \# sections & 9.7 & 1 & 29 \\
+\bottomrule 
+\end{tabular}}
+\end{table}

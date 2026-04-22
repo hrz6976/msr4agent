@@ -1,0 +1,29 @@
+\section{Background and Related Work}
+\label{sec:related-work}
+\label{sec:background}
+
+\paragraph{Coding agents} Coding agents are LLM-based systems designed for autonomous resolution of coding tasks \citep{yang2024sweagent}. Typically, they consist of a harness that allows an LLM to interact with its environment using specialized tools for, e.g., executing bash commands, conducting web searches, or reading, creating, or modifying files \citep{wang2025openhands, yang2024sweagent}.
+
+Their impressive performance on repository-level coding tasks like SWE-bench \citep{swebench} led to rapid adoption in the software engineering community \citep{cursor} and the development of new agents by specialized companies \citep{AiderAI,wang2025openhands} and model providers \citep{openaiCodex2026,googleGeminiCli,QwenLMQwen3Coder,ClaudeCodeDocsOverview}. 
+Model providers now train their LLMs to use the tools exposed by their harnesses~\citep{QwenLMQwen3Coder}, which can substantially improve coding ability relative to simpler harnesses~\citep{swebench-bash}.
+Accordingly, in \cref{sec:experiments}, we evaluate each LLM only within its corresponding harness.
+
+\paragraph{\Agentsmds}
+As coding agents were more broadly adopted, a common need arose to provide the agent with additional context about novel and little-known codebases \citep{WhyICreatedAgentsMd,builderioImproveYourAICodeOutputWithAgentsMd}.
+To address this issue, model and agent developers recommend including \emph{\agentsmds{}}, such as \texttt{AGENTS.md} or \texttt{CLAUDE.md}, with codebases \citep{OpenAIAgenticAIFoundation2025,UsingClaudeMdFiles}.
+Many agent harnesses provide built-in commands to initialize such \agentsmds{} automatically using the coding agent itself, \eg{} by providing a dedicated \ttt{/init} command in the agent interface \citep{openaiCodex2026,QwenLMQwen3Coder,ClaudeCodeDocsOverview}.
+At the time of writing, \citet{AGENTSMd2025} report that over 60'000 public GitHub repositories include a \agentsmd{}.
+
+\paragraph{Evaluating \agentsmds{}}
+Prior work collected and categorized the content of \agentsmds{} \citep{chatlatanagulchai2025agentreadmesempiricalstudy,mohsenimofidi2025contextengineeringaiagents}, deriving mostly descriptive metrics about their content without investigating their effectiveness \citep{githubHowToWriteAGreatAgentsMdLessons}.
+While individual developers report anecdotal evidence of better alignment and solution capabilities when providing \agentsmds{} \citep{builderioImproveYourAICodeOutputWithAgentsMd,TheRiseOfAgentsMd2025}, we are the first to investigate the impact of actively used \agentsmds{} on agent behavior and performance at scale.
+
+\paragraph{Repository-level evaluation}
+Spearheaded by \citet{swebench}, evaluating coding agents on the autonomous resolution of real-world repository-level tasks quickly became the gold standard for assessing their capabilities. 
+While initial work focuses on issue resolution \citep{swebench}, follow-up work proposed benchmarks on feature addition \citep{li-etal-2025-fea,du2025swedevevaluatingtrainingautonomous},
+unit test generation \citep{mundler2024swt}, function generation \citep{liang2025languagemodelsreplaceprogrammers}, code performance \citep{he2025sweperflanguagemodelsoptimize}, and security \citep{chen2025secureagentbenchbenchmarkingsecurecode}.
+Our work evaluates whether autonomous issue resolution and feature addition capabilities improve with actively used \agentsmds{}. 
+
+Orthogonally, benchmarks have also been extended by mining more recent and more difficult problems \citep{badertdinov2025swerebenchautomatedpipelinetask,zhang2025swebenchgoeslive}, as well as instances focusing on end-user applications \citep{vergopoulos2025automatedbenchmarkgenerationrepositorylevel}.
+We follow their approaches to mining novel task instances to obtain a specialized set of tasks in repositories that feature \agentsmds{}.
+

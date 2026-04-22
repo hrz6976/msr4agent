@@ -1,0 +1,19 @@
+\section{Limitations and Future Work}
+\label{sec:future-work}
+While our work addresses important shortcomings in the literature, exciting opportunities for future research remain.
+
+\paragraph{Niche programming languages}
+The current evaluation is focused heavily on Python. Since this is a language that is widely represented in the training data, much detailed knowledge about tooling, dependencies, and other repository specifics might be present in the models' parametric knowledge, nullifying the effect of \agentsmds{}. Future work may investigate the effect of \agentsmds{} on more niche programming languages and toolchains that are less represented in the training data, and known to be more difficult for LLMs \citep{cassano2022multiplescalableextensibleapproach,pmlr-v202-orlanski23a}.
+
+\paragraph{\Agentsmds{} beyond task resolution} In this work, we evaluate the impact of \agentsmds{} on task resolution rate. However, there are many other relevant aspects of coding agents, such as code efficiency \citep{he2025sweperflanguagemodelsoptimize} and security \citep{chen2025secureagentbenchbenchmarkingsecurecode}, that we believe could be explored in future work. Specifically, for security, prior work found that prompting LLMs to generate secure code significantly improves the security of generated code \citep{baxbench}.
+
+\paragraph{Improving \agentsmd{} generation} Another interesting avenue opened by this work is how to improve the automatic generation of \emph{useful} \agentsmds{}. Here, human developers appear to dominate per our evaluation. Several related works in the direction of planning and continuous learning from prior tasks may be applicable for this task \citep{suzgun2025dynamiccheatsheettesttimelearning,zhang2025agenticcontextengineeringevolving,cheng2025evocurrselfevolvingcurriculumbehavior}. By tackling this challenge, future agents could gain a long-term capability at meaningful self-improvement.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We present an extensive evaluation of the impact of \agentsmds{} on coding agent performance for four common coding agents on \swebench{} and \planbench{}. The latter is a new benchmark we built from recent GitHub issues and less popular repositories containing developer-written \agentsmds{}. We find that all \agentsmds{} consistently increase the number of steps required to complete tasks. LLM-generated \agentsmds{} have a marginal negative effect on task success rates, while developer-written ones provide a marginal performance gain.
+
+Our trace analyses show that instructions in \agentsmds{} are generally followed and lead to more testing and a broader exploration, however they do not function as effective repository overviews. 
+Overall, our results suggest that \agentsmds{} have only marginal effect on agent behavior, and are likely only desirable when manually written. 
+This highlights a concrete gap between current agent-developer recommendations and observed outcomes, and motivates future work on principled ways to automatically generate concise, task-relevant guidance for coding agents.
