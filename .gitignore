@@ -1,8 +1,41 @@
-# Python
-__pycache__
-*.py[cod]
+# Harbor run outputs
+jobs/
+trials/
+
+# External benchmark resources kept locally
+external/agentbench/
+external/swd-bench/
+
+# Python cache and temporary files
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 *.so
 
-# macOS
-._*
+# Environment and local config
+.venv/
+venv/
+env/
+.env
+.env.local
+.env.*.local
+.python-version
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
+**/logs/
+*.log
+*.cast
