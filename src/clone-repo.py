@@ -157,7 +157,7 @@ def ensure_clone(spec: CheckoutSpec, destination: Path) -> None:
 
     print(f"[clone] {spec.repo} -> {destination}")
     run_git(
-        ["clone", "--filter=blob:none", "--no-checkout", spec.url, str(destination)]
+        ["clone", "--no-checkout", spec.url, str(destination)]
     )
 
 
@@ -191,7 +191,7 @@ def sync_checkout(spec: CheckoutSpec, dry_run: bool) -> None:
 
     print(f"[fetch] {spec.repo} [{spec.manifest}]")
     run_git(
-        ["fetch", "--filter=blob:none", "origin", "--tags", "--force", "--prune"],
+        ["fetch", "origin", "--tags", "--force", "--prune"],
         cwd=destination,
     )
     if spec.used_commits:

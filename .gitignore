@@ -1,6 +1,7 @@
 # Harbor run outputs
 jobs/
 trials/
+workspace/
 
 # External benchmark resources kept locally
 external/agentbench/
